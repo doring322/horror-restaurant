@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>괴담 레스토랑 👻</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a, #2d1b1b);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: backgroundShift 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        .container {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.2), 0 0 60px rgba(0, 0, 0, 0.8);
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            border: 3px solid #330000;
+            backdrop-filter: blur(10px);
+            animation: containerGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerGlow {
+            0% { box-shadow: 0 15px 40px rgba(255, 0, 0, 0.2), 0 0 60px rgba(0, 0, 0, 0.8); }
+            100% { box-shadow: 0 15px 40px rgba(255, 0, 0, 0.4), 0 0 80px rgba(255, 0, 0, 0.1); }
+        }
+        
+        h1 {
+            color: #ff4444;
+            margin-bottom: 20px;
+            font-size: 3em;
+            text-shadow: 3px 3px 6px rgba(255, 0, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.3);
+            animation: titleFlicker 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleFlicker {
+            0% { text-shadow: 3px 3px 6px rgba(255, 0, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.3); }
+            100% { text-shadow: 3px 3px 6px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.6); }
+        }
+
+        .subtitle {
+            margin-bottom: 40px;
+            font-size: 18px;
+            color: #ccc;
+            font-style: italic;
+        }
+        
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .category-btn {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            color: #fff;
+            padding: 20px 30px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 2px solid #444;
+            position: relative;
+            overflow: hidden;
+            min-width: 180px;
+        }
+
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .category-btn:hover::before {
+            left: 100%;
+        }
+        
+        .category-btn:hover {
+            background: linear-gradient(145deg, #ff4444, #cc0000);
+            border-color: #ff4444;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 68, 68, 0.4);
+        }
+
+        .category-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        .random-btn {
+            background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+            color: #fff;
+            padding: 18px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin-top: 30px;
+            border: 2px solid #666;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .random-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .random-btn:hover::before {
+            left: 100%;
+        }
+        
+        .random-btn:hover {
+            background: linear-gradient(145deg, #6c5ce7, #5a4fcf);
+            border-color: #6c5ce7;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+        
+        .story-container {
+            background: rgba(10, 10, 10, 0.95);
+            padding: 35px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #ff4444;
+            text-align: left;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            display: none;
+            animation: storyAppear 0.8s ease-out;
+        }
+
+        @keyframes storyAppear {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .story-text {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #f0f0f0;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        .story-category {
+            text-align: center;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 16px;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .control-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            display: none;
+        }
+
+        .control-btn {
+            background: linear-gradient(145deg, #333, #222);
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #555;
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(145deg, #555, #333);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
+        }
+
+        .loading {
+            display: none;
+            color: #ff4444;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+        .loading::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .category-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .control-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍽️ 괴담 레스토랑 👻</h1>
+        <p class="subtitle">오늘의 메뉴는 무서운 이야기입니다... 어떤 맛을 선택하시겠습니까?</p>
+
+        <div id="mainMenu">
+            <div class="category-buttons">
+                <button class="category-btn" onclick="generateStory('school')">
+                    🍕 학교 괴담
+                </button>
+                <button class="category-btn" onclick="generateStory('hospital')">
+                    🍔 병원 괴담
+                </button>
+                <button class="category-btn" onclick="generateStory('apartment')">
+                    🍝 아파트 괴담
+                </button>
+            </div>
+
+            <button class="random-btn" onclick="generateRandomStory()">
+                🎲 셰프 추천 메뉴
+            </button>
+        </div>
+
+        <div class="loading" id="loading">
+            요리사가 괴담을 요리하는 중입니다
+        </div>
+
+        <div class="story-container" id="storyContainer">
+            <div class="story-text" id="storyText"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <span class="story-category" id="storyCategory"></span>
+            </div>
+        </div>
+
+        <div class="control-buttons" id="controlButtons">
+            <button class="control-btn" onclick="showMainMenu()">🔙 메뉴로 돌아가기</button>
+            <button class="control-btn" onclick="generateRandomStory()">🍴 다른 요리 주문</button>
+            <button class="control-btn" onclick="shareStory()">📤 요리 추천하기</button>
+        </div>
+
+        <div class="footer">
+            <p>⚠️ 이 레스토랑의 요리는 재미를 위한 것입니다. 너무 무서워하지 마세요! ⚠️</p>
+        </div>
+    </div>
+
+    <script>
+        // 괴담 데이터베이스
+        const HORROR_DATA = {
+            'school': {
+                'backgrounds': [
+                    '새벽 2시, 학교 화장실에서',
+                    '방과후 텅 빈 교실에서',
+                    '지하실 창고에서',
+                    '옥상 계단 끝에서',
+                    '음악실 피아노 앞에서',
+                    '도서관 구석진 서고에서',
+                    '체육관 구석에서',
+                    '실험실 어둠 속에서',
+                    '급식실 조리실에서',
+                    '방송실 깊은 밤에'
+                ],
+                'characters': [
+                    '혼자 남은 여학생이',
+                    '야자를 마친 학생이',
+                    '청소를 하던 학생이',
+                    '책을 찾던 학생이',
+                    '연습을 하던 학생이',
+                    '숙제를 하던 학생이',
+                    '동아리 활동을 마친 학생이',
+                    '벌을 받던 학생이',
+                    '야간 경비원이',
+                    '늦게 퇴근하던 선생님이'
+                ],
+                'events': [
+                    '갑자기 발자국 소리가 들렸다',
+                    '누군가 이름을 부르는 소리가 났다',
+                    '찬 바람이 목덜미를 스쳤다',
+                    '거울 속에 누군가가 서 있었다',
+                    '뒤에서 누군가 바라보는 시선을 느꼈다',
+                    '갑자기 모든 불이 꺼졌다',
+                    '천천히 문이 저절로 열렸다',
+                    '어디선가 아이 울음소리가 들렸다',
+                    '칠판에 저절로 글씨가 써졌다',
+                    '계단에서 누군가 뛰어내리는 소리가 났다'
+                ],
+                'endings': [
+                    '그리고 아무도 그 학생을 다시 보지 못했다.',
+                    '다음 날, 그 자리에는 낡은 교복만 남아있었다.',
+                    '지금도 그 학교엔 그 학생의 혼이 떠돈다고 한다.',
+                    '그 후로 그 장소는 출입금지가 되었다.',
+                    '그 학생은 정신을 잃고 병원에 실려갔고, 깨어나지 못했다.',
+                    '아직도 밤이면 그곳에서 도움을 청하는 소리가 들린다.',
+                    '그 학생의 마지막 말은 "뒤에... 뒤에 있어"였다.',
+                    '그 일 이후로 그 학교에선 매년 학생 한 명씩 사라진다.',
+                    '그 학교는 결국 폐교되었고, 지금도 비어있다.',
+                    '그날 밤 이후, 그 학생은 말을 하지 못하게 되었다.'
+                ]
+            },
+            'hospital': {
+                'backgrounds': [
+                    '폐병원 수술실에서',
+                    '깊은 밤 병원 복도에서',
+                    '지하 영안실에서',
+                    '버려진 병실에서',
+                    '병원 엘리베이터 안에서',
+                    '응급실 구석에서',
+                    '정신병동 끝방에서',
+                    '병원 옥상에서',
+                    '중환자실 앞에서',
+                    '병원 지하주차장에서'
+                ],
+                'characters': [
+                    '야근하던 간호사가',
+                    '길을 잃은 방문객이',
+                    '청소를 하던 직원이',
+                    '응급환자를 돌보던 의사가',
+                    '밤늦게 온 보호자가',
+                    '경비를 서던 직원이',
+                    '실습생이',
+                    '환자를 돌보던 간병인이',
+                    '야간 당직 의사가',
+                    '응급실 간호사가'
+                ],
+                'events': [
+                    '갑자기 수술용 메스가 저절로 움직였다',
+                    '빈 병실에서 환자복 입은 누군가를 봤다',
+                    '엘리베이터가 없는 층에서 멈췄다',
+                    '수술실에서 맥박 소리가 들렸다',
+                    '영안실 문이 안쪽에서 두드려졌다',
+                    '복도 끝에서 휠체어가 혼자 굴러왔다',
+                    '빈 침대에 누군가 누워있는 형태가 보였다',
+                    '수액 주머니가 저절로 떨어졌다',
+                    '응급실 모니터에서 심전도가 나타났다',
+                    '환자 호출벨이 빈 병실에서 계속 울렸다'
+                ],
+                'endings': [
+                    '그 후 그 병원은 영원히 폐쇄되었다.',
+                    '지금도 그 병원엔 치료받지 못한 영혼들이 떠돈다.',
+                    '그날 밤 이후, 그 사람은 말을 하지 못하게 되었다.',
+                    '그 병원에선 아직도 밤마다 수술 소리가 들린다.',
+                    '그 사람은 다음 날 아침 의식불명 상태로 발견되었다.',
+                    '그 병원의 환자 수는 늘 한 명씩 맞지 않는다고 한다.',
+                    '그날 이후 그 층은 아무도 사용하지 않게 되었다.',
+                    '지금도 그 병원엔 퇴원하지 못한 환자들이 있다고 한다.',
+                    '그 병원은 결국 문을 닫았고, 지금은 폐허가 되었다.',
+                    '그 후로 그 사람은 병원 근처에 얼씬도 하지 못한다.'
+                ]
+            },
+            'apartment': {
+                'backgrounds': [
+                    '새벽 3시, 아파트 계단에서',
+                    '엘리베이터 안에서',
+                    '지하주차장에서',
+                    '옥상 물탱크 근처에서',
+                    '빈 집 현관문 앞에서',
+                    '아파트 복도에서',
+                    '베란다에서',
+                    '관리사무소에서',
+                    '아파트 쓰레기장에서',
+                    '단지 놀이터에서'
+                ],
+                'characters': [
+                    '늦게 귀가하던 직장인이',
+                    '쓰레기를 버리러 나온 주민이',
+                    '택배를 받으러 나온 사람이',
+                    '운동을 마치고 온 사람이',
+                    '강아지 산책을 시키던 사람이',
+                    '편의점에서 돌아오던 학생이',
+                    '야근을 마치고 온 회사원이',
+                    '새벽 조깅을 나간 사람이',
+                    '관리사무소 경비원이',
+                    '이사를 온 새 주민이'
+                ],
+                'events': [
+                    '위층에서 구슬 굴러가는 소리가 들렸다',
+                    '엘리베이터가 13층에서 멈췄다',
+                    '복도 끝에서 아이가 뛰어다니는 소리가 났다',
+                    '비어있는 집에서 불이 켜졌다 꺼졌다 했다',
+                    '계단에서 누군가 따라오는 발소리가 들렸다',
+                    '위층에서 가구 끄는 소리가 계속 났다',
+                    '엘리베이터 문이 열렸는데 아무도 없었다',
+                    '현관문을 두드리는 소리가 들렸지만 문구멍엔 아무도 없었다',
+                    '베란다에서 누군가 창문을 두드렸다',
+                    '아래층에서 아이 울음소리가 계속 들렸다'
+                ],
+                'endings': [
+                    '그 아파트에선 지금도 밤마다 이상한 소리가 난다.',
+                    '그 후로 그 집은 계속 비어있게 되었다.',
+                    '그날 이후 그 사람은 이사를 갔다.',
+                    '지금도 그 층 복도는 항상 춥다고 한다.',
+                    '그 아파트의 13층은 아무도 살지 않는다.',
+                    '그 사람은 그날 밤 잠들지 못했고, 다음 날 이사했다.',
+                    '아직도 그 아파트 주민들은 밤에 이상한 소리를 듣는다.',
+                    '그 아파트 관리사무소엔 설명할 수 없는 신고가 자주 들어온다.',
+                    '그 아파트는 결국 재건축되었지만, 여전히 이상하다고 한다.',
+                    '그 후로 그 사람은 아파트 대신 단독주택으로만 이사다닌다.'
+                ]
+            }
+        };
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generateHorrorStory(category) {
+            if (!HORROR_DATA[category]) return null;
+            
+            const data = HORROR_DATA[category];
+            const background = getRandomElement(data.backgrounds);
+            const character = getRandomElement(data.characters);
+            const event = getRandomElement(data.events);
+            const ending = getRandomElement(data.endings);
+            
+            return `${background} ${character} ${event}. ${ending}`;
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('storyContainer').style.display = 'none';
+            document.getElementById('controlButtons').style.display = 'none';
+        }
+
+        function showStory(story, category) {
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('storyText').innerText = story;
+                
+                const categoryNames = {
+                    'school': '🍕 학교 괴담',
+                    'hospital': '🍔 병원 괴담',
+                    'apartment': '🍝 아파트 괴담'
+                };
+                
+                document.getElementById('storyCategory').innerText = categoryNames[category];
+                document.getElementById('storyContainer').style.display = 'block';
+                document.getElementById('controlButtons').style.display = 'flex';
+            }, 1500);
+        }
+
+        function generateStory(category) {
+            showLoading();
+            const story = generateHorrorStory(category);
+            if (story) {
+                showStory(story, category);
+            }
+        }
+
+        function generateRandomStory() {
+            const categories = Object.keys(HORROR_DATA);
+            const randomCategory = getRandomElement(categories);
+            generateStory(randomCategory);
+        }
+
+        function showMainMenu() {
+            document.getElementById('mainMenu').style.display = 'block';
+            document.getElementById('storyContainer').style.display = 'none';
+            document.getElementById('controlButtons').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function shareStory() {
+            const story = document.getElementById('storyText').innerText;
+            const category = document.getElementById('storyCategory').innerText;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '괴담 레스토랑 - ' + category,
+                    text: story,
+                    url: window.location.href
+                });
+            } else {
+                // 클립보드에 복사
+                const shareText = `${category}\n\n${story}\n\n- 괴담 레스토랑에서 요리됨`;
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('괴담 요리가 클립보드에 복사되었습니다!');
+                });
+            }
+        }
+
+        // 페이지 로드시 효과음 (선택사항)
+        document.addEventListener('DOMContentLoaded', function() {
+            // 간단한 웰컴 애니메이션
+            setTimeout(() => {
+                document.querySelector('.container').style.animation = 'containerGlow 3s ease-in-out infinite alternate';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
